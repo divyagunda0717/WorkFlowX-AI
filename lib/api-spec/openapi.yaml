@@ -3,13 +3,25 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: WorkFlowX AI autonomous workflow intelligence API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Account registration and authentication
+  - name: workflows
+    description: Business workflow lifecycle and agent orchestration
+  - name: tasks
+    description: Workflow task management
+  - name: agents
+    description: Agent status and activity
+  - name: approvals
+    description: Human review of high-impact actions
+  - name: analytics
+    description: Workflow performance summaries
 paths:
   /healthz:
     get:
@@ -24,6 +36,398 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrationInput"
+      responses:
+        "201":
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      tags: [auth]
+      summary: Return the current authenticated user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /workflows:
+    get:
+      operationId: listWorkflows
+      tags: [workflows]
+      summary: List the current user's workflows
+      responses:
+        "200":
+          description: Workflows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Workflow"
+    post:
+      operationId: createWorkflow
+      tags: [workflows]
+      summary: Create a workflow and run AI analysis and planning
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkflowInput"
+      responses:
+        "201":
+          description: Workflow with generated analysis and tasks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/demo:
+    post:
+      operationId: createDemoWorkflow
+      tags: [workflows]
+      summary: Create and analyze the payment/order demo scenario
+      responses:
+        "201":
+          description: Demo workflow
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}:
+    parameters:
+      - name: workflowId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getWorkflow
+      tags: [workflows]
+      summary: Get workflow details
+      responses:
+        "200":
+          description: Workflow details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+    put:
+      operationId: updateWorkflow
+      tags: [workflows]
+      summary: Update workflow details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkflowUpdate"
+      responses:
+        "200":
+          description: Updated workflow
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workflow"
+    delete:
+      operationId: deleteWorkflow
+      tags: [workflows]
+      summary: Delete a workflow and its related records
+      responses:
+        "204":
+          description: Deleted
+  /workflows/{workflowId}/start:
+    post:
+      operationId: startWorkflow
+      tags: [workflows]
+      summary: Start workflow execution
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Workflow started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/pause:
+    post:
+      operationId: pauseWorkflow
+      tags: [workflows]
+      summary: Pause workflow execution
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Workflow paused
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/execute:
+    post:
+      operationId: executeWorkflowStep
+      tags: [workflows]
+      summary: Execute the next ready task
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Workflow after execution step
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/simulate-failure:
+    post:
+      operationId: simulateTaskFailure
+      tags: [workflows]
+      summary: Fail an active task and trigger autonomous replanning
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Replanned workflow
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/replan:
+    post:
+      operationId: replanWorkflow
+      tags: [workflows]
+      summary: Request a new plan for a blocked workflow
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Replanned workflow
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/complete:
+    post:
+      operationId: completeWorkflow
+      tags: [workflows]
+      summary: Mark a resolved workflow complete
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Completed workflow
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowDetail"
+  /workflows/{workflowId}/agents:
+    get:
+      operationId: getWorkflowAgents
+      tags: [agents]
+      summary: Get agent state and activity for a workflow
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Agent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgentLog"
+  /tasks:
+    get:
+      operationId: listTasks
+      tags: [tasks]
+      summary: List tasks across the current user's workflows
+      responses:
+        "200":
+          description: Tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+  /tasks/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getTask
+      tags: [tasks]
+      summary: Get task details
+      responses:
+        "200":
+          description: Task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+    put:
+      operationId: updateTask
+      tags: [tasks]
+      summary: Update task status or details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Updated task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /approvals:
+    get:
+      operationId: listApprovals
+      tags: [approvals]
+      summary: List pending and past approvals
+      responses:
+        "200":
+          description: Approval requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Approval"
+  /approvals/{approvalId}/approve:
+    post:
+      operationId: approveAction
+      tags: [approvals]
+      summary: Approve a proposed high-impact action
+      parameters:
+        - name: approvalId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Approved action
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Approval"
+  /approvals/{approvalId}/reject:
+    post:
+      operationId: rejectAction
+      tags: [approvals]
+      summary: Reject a proposed high-impact action
+      parameters:
+        - name: approvalId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApprovalDecision"
+      responses:
+        "200":
+          description: Rejected action
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Approval"
+  /analytics/dashboard:
+    get:
+      operationId: getDashboardAnalytics
+      tags: [analytics]
+      summary: Get dashboard counters and trend data
+      responses:
+        "200":
+          description: Analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardAnalytics"
+  /activity:
+    get:
+      operationId: getRecentActivity
+      tags: [agents]
+      summary: Get recent agent activity
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AgentLog"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +437,167 @@ components:
           type: string
       required:
         - status
+    User:
+      type: object
+      required: [id, name, email, role, createdAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string }
+        createdAt: { type: string, format: date-time }
+    RegistrationInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name: { type: string, minLength: 2, maxLength: 80 }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+    AuthSession:
+      type: object
+      required: [token, user]
+      properties:
+        token: { type: string }
+        user: { $ref: "#/components/schemas/User" }
+    WorkflowInput:
+      type: object
+      required: [title, description]
+      properties:
+        title: { type: string, minLength: 4, maxLength: 160 }
+        description: { type: string, minLength: 12, maxLength: 8000 }
+        department: { type: string }
+        deadline: { type: ["string", "null"], format: date-time }
+    WorkflowUpdate:
+      type: object
+      properties:
+        title: { type: string, minLength: 4, maxLength: 160 }
+        description: { type: string, minLength: 12, maxLength: 8000 }
+        department: { type: string }
+        deadline: { type: ["string", "null"], format: date-time }
+    Workflow:
+      type: object
+      required: [id, title, description, category, priority, impact, status, createdAt, updatedAt, progress, taskCount, completedTaskCount]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        department: { type: string }
+        category: { type: string }
+        priority: { type: string, enum: [Low, Medium, High, Critical] }
+        impact: { type: string, enum: [Low, Medium, High, Critical] }
+        status: { type: string, enum: [draft, analyzing, planning, ready, executing, monitoring, blocked, replanning, awaiting_approval, completed, failed, paused] }
+        currentStep: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        deadline: { type: ["string", "null"], format: date-time }
+        progress: { type: integer, minimum: 0, maximum: 100 }
+        taskCount: { type: integer }
+        completedTaskCount: { type: integer }
+        requiresApproval: { type: boolean }
+    WorkflowAnalysis:
+      type: object
+      required: [summary, category, priority, impact, departments, recommendedActions, missingInformation]
+      properties:
+        summary: { type: string }
+        category: { type: string }
+        priority: { type: string, enum: [Low, Medium, High, Critical] }
+        impact: { type: string, enum: [Low, Medium, High, Critical] }
+        departments:
+          type: array
+          items: { type: string }
+        recommendedActions:
+          type: array
+          items: { type: string }
+        missingInformation:
+          type: array
+          items: { type: string }
+    Task:
+      type: object
+      required: [id, workflowId, title, description, assignedAgent, priority, status, dependencies, requiresApproval, createdAt, updatedAt]
+      properties:
+        id: { type: string }
+        workflowId: { type: string }
+        title: { type: string }
+        description: { type: string }
+        assignedAgent: { type: string }
+        priority: { type: string, enum: [Low, Medium, High, Critical] }
+        status: { type: string, enum: [Pending, In Progress, Blocked, Completed, Failed] }
+        dependencies:
+          type: array
+          items: { type: string }
+        requiresApproval: { type: boolean }
+        deadline: { type: ["string", "null"], format: date-time }
+        estimatedMinutes: { type: integer }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    TaskUpdate:
+      type: object
+      properties:
+        status: { type: string, enum: [Pending, In Progress, Blocked, Completed, Failed] }
+        assignedAgent: { type: string }
+    AgentLog:
+      type: object
+      required: [id, workflowId, agentName, action, status, summary, timestamp]
+      properties:
+        id: { type: string }
+        workflowId: { type: string }
+        agentName: { type: string }
+        action: { type: string }
+        status: { type: string }
+        summary: { type: string }
+        timestamp: { type: string, format: date-time }
+    Approval:
+      type: object
+      required: [id, workflowId, action, reason, recommendation, status, createdAt]
+      properties:
+        id: { type: string }
+        workflowId: { type: string }
+        taskId: { type: ["string", "null"] }
+        action: { type: string }
+        reason: { type: string }
+        recommendation: { type: string }
+        status: { type: string, enum: [pending, approved, rejected] }
+        decidedBy: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: ["string", "null"], format: date-time }
+    ApprovalDecision:
+      type: object
+      properties:
+        reason: { type: string, maxLength: 1000 }
+    WorkflowDetail:
+      type: object
+      required: [workflow, tasks, activity, approvals]
+      properties:
+        workflow: { $ref: "#/components/schemas/Workflow" }
+        analysis: { oneOf: [{ $ref: "#/components/schemas/WorkflowAnalysis" }, { type: "null" }] }
+        tasks:
+          type: array
+          items: { $ref: "#/components/schemas/Task" }
+        activity:
+          type: array
+          items: { $ref: "#/components/schemas/AgentLog" }
+        approvals:
+          type: array
+          items: { $ref: "#/components/schemas/Approval" }
+    DashboardAnalytics:
+      type: object
+      required: [totalWorkflows, activeWorkflows, completedWorkflows, pendingTasks, highPriorityWorkflows, failedTasks, replannedWorkflows, averageResolutionHours, activity]
+      properties:
+        totalWorkflows: { type: integer }
+        activeWorkflows: { type: integer }
+        completedWorkflows: { type: integer }
+        pendingTasks: { type: integer }
+        highPriorityWorkflows: { type: integer }
+        failedTasks: { type: integer }
+        replannedWorkflows: { type: integer }
+        averageResolutionHours: { type: number }
+        activity:
+          type: array
+          items: { $ref: "#/components/schemas/AgentLog" }
 

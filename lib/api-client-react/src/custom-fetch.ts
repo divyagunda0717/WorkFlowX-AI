@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export type CustomFetchOptions = RequestInit & {
   responseType?: "json" | "text" | "blob" | "auto";
 };
@@ -360,12 +362,45 @@ export async function customFetch<T = unknown>(
 
   const requestInfo = { method, url: resolveUrl(input) };
 
-  const response = await fetch(input, { ...init, method, headers });
+  const requestHeaders: Record<string, string> = {};
+  headers.forEach((value, key) => {
+    requestHeaders[key] = value;
+  });
 
-  if (!response.ok) {
-    const errorData = await parseErrorBody(response, method);
-    throw new ApiError(response, errorData, requestInfo);
+  let body: BodyInit | null | undefined = init.body;
+  if (typeof body === "string" && looksLikeJson(body)) {
+    try {
+      body = JSON.parse(body) as BodyInit;
+    } catch {
+      // Keep malformed JSON unchanged so the API can return its normal error.
+    }
   }
 
-  return (await parseSuccessBody(response, responseType, requestInfo)) as T;
+  const response = await axios.request<T>({
+    url: requestInfo.url,
+    method,
+    headers: requestHeaders,
+    data: body,
+    responseType: responseType === "auto" ? "json" : responseType,
+    withCredentials: init.credentials === "include",
+    signal: init.signal ?? undefined,
+    validateStatus: () => true,
+  });
+
+  const responseBody =
+    response.data == null || response.status === 204
+      ? null
+      : typeof response.data === "string"
+        ? response.data
+        : JSON.stringify(response.data);
+  const webResponse = new Response(responseBody, {
+    status: response.status,
+    statusText: response.statusText,
+  });
+
+  if (response.status < 200 || response.status >= 300) {
+    throw new ApiError(webResponse, response.data, requestInfo);
+  }
+
+  return response.data;
 }
