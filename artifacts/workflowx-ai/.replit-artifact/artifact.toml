@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "WorkFlowX AI"
+description = "An autonomous workflow intelligence platform that analyzes business issues, plans and delegates tasks across AI agents, monitors execution, adapts to failures, and routes high-impact actions for human approval."
+version = "1.0.0"
+id = "artifacts/workflowx-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22065
+
+[services.development]
+run = "pnpm --filter @workspace/workflowx-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/workflowx-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/workflowx-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22065"
+BASE_PATH = "/"

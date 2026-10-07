@@ -1,0 +1,1934 @@
+# WORKFLOWX AI
+
+## Autonomous Multi-Agent Workflow Intelligence System
+
+You are an expert Full-Stack Developer, AI Engineer, Software Architect, UI/UX Designer, Database Engineer, Security Engineer, and DevOps Engineer.
+
+Your task is to BUILD the complete working web application described below.
+
+This is a hackathon project under the theme:
+
+# AI AGENTIC & INTELLIGENT SYSTEMS
+
+The project must demonstrate genuine agentic AI behavior, including:
+
+* Understanding
+* Reasoning
+* Planning
+* Task decomposition
+* Delegation
+* Execution
+* Monitoring
+* Failure detection
+* Dynamic replanning
+* Human-in-the-loop approval
+
+Do NOT build this as a simple chatbot.
+
+The AI must interact with the application's workflow system and produce actual tasks, agent activities, workflow updates, and replanning decisions.
+
+==================================================
+
+# 1. MANDATORY TECHNOLOGY STACK
+
+==================================================
+
+IMPORTANT:
+
+Use ONLY the following technologies.
+
+DO NOT replace them with other technologies unless absolutely required for compatibility.
+
+## FRONTEND
+
+Use:
+
+* React.js
+* Vite
+* React Router
+* Tailwind CSS
+* Axios
+
+Do NOT use:
+
+* Next.js
+* Angular
+* Vue
+* Svelte
+* Firebase frontend SDK
+* Any other frontend framework
+
+## BACKEND
+
+Use:
+
+* Node.js
+* Express.js
+* JSON Web Token (JWT)
+* bcrypt
+* Zod
+
+Do NOT replace Node.js/Express with:
+
+* Python
+* Django
+* Flask
+* FastAPI
+* PHP
+* Java Spring
+* Next.js backend
+
+## DATABASE
+
+Use:
+
+* MongoDB
+* Mongoose
+* MongoDB Atlas for deployment
+
+Do NOT use:
+
+* Firebase
+* Firestore
+* Supabase
+* PostgreSQL
+* MySQL
+* SQLite
+
+## ARTIFICIAL INTELLIGENCE
+
+Use:
+
+* Google Gemini API
+
+The Gemini API must ONLY be called from the backend.
+
+NEVER expose the Gemini API key in frontend code.
+
+NEVER put the Gemini API key inside React.
+
+NEVER commit the API key to GitHub.
+
+The API key must be stored in backend environment variables.
+
+## DEVELOPMENT TOOLS
+
+The project must be compatible with:
+
+* Visual Studio Code
+* Cursor
+* Antigravity
+
+Use:
+
+* Git
+* GitHub
+
+Postman or Bruno may be used for API testing.
+
+## DEPLOYMENT
+
+Frontend:
+
+* Vercel
+
+Backend:
+
+* Render
+
+Database:
+
+* MongoDB Atlas
+
+The project must be deployment-ready for these services.
+
+==================================================
+
+# 2. PROJECT NAME
+
+==================================================
+
+Project name:
+
+# WorkFlowX AI
+
+Tagline:
+
+"Understand. Plan. Delegate. Execute. Adapt."
+
+Create a professional enterprise-style AI application.
+
+==================================================
+
+# 3. PROBLEM STATEMENT
+
+==================================================
+
+Organizations frequently struggle with fragmented workflows, repetitive coordination, disconnected information, delayed decisions, and manual task management across departments.
+
+When a business issue occurs, employees often have to manually:
+
+* Understand the issue
+* Determine priority
+* Break the issue into tasks
+* Assign tasks to departments
+* Communicate with different teams
+* Track task progress
+* Follow up on delays
+* Escalate unresolved issues
+* Prepare reports
+* Decide what should happen next
+
+This creates:
+
+* Slow issue resolution
+* Repetitive administrative work
+* Poor coordination
+* Missed deadlines
+* Inconsistent decisions
+* Lack of workflow visibility
+* Increased employee workload
+
+Traditional automation follows fixed rules.
+
+Organizations need an intelligent system capable of understanding a problem, planning a multi-step workflow, delegating tasks, monitoring progress, detecting failures, and adapting its plan dynamically.
+
+==================================================
+
+# 4. PROPOSED SOLUTION
+
+==================================================
+
+Build WorkFlowX AI.
+
+WorkFlowX AI is an autonomous multi-agent workflow intelligence platform.
+
+A user submits a business problem.
+
+The system uses specialized AI agents coordinated by an Orchestrator Agent.
+
+The workflow should follow:
+
+USER PROBLEM
+↓
+UNDERSTAND
+↓
+ANALYZE
+↓
+PLAN
+↓
+DELEGATE
+↓
+EXECUTE
+↓
+MONITOR
+↓
+DETECT FAILURE
+↓
+REPLAN
+↓
+HUMAN APPROVAL IF REQUIRED
+↓
+RESOLVE
+
+The system should convert AI decisions into actual database records.
+
+For example:
+
+AI says:
+
+"Verify payment transaction."
+
+The application must create an actual task:
+
+Task:
+Verify payment transaction
+
+Assigned Agent:
+Finance Agent
+
+Priority:
+High
+
+Status:
+Pending
+
+Do NOT merely display AI-generated text.
+
+==================================================
+
+# 5. MULTI-AGENT ARCHITECTURE
+
+==================================================
+
+Implement the following logical agents.
+
+The agents may use the same Gemini API but MUST have separate responsibilities and prompts.
+
+---
+
+## ORCHESTRATOR AGENT
+
+The central intelligence of the system.
+
+Responsibilities:
+
+* Receive workflow
+* Understand objective
+* Determine required agents
+* Create execution plan
+* Coordinate agents
+* Monitor workflow state
+* Detect failures
+* Trigger replanning
+* Decide whether human approval is needed
+* Move workflow toward completion
+
+The Orchestrator must maintain workflow state.
+
+Possible states:
+
+draft
+analyzing
+planning
+ready
+executing
+monitoring
+blocked
+replanning
+awaiting_approval
+completed
+failed
+
+---
+
+## ANALYSIS AGENT
+
+Analyze the business problem.
+
+Determine:
+
+* Summary
+* Category
+* Priority
+* Business impact
+* Affected departments
+* Recommended actions
+* Missing information
+
+Return structured JSON.
+
+Example:
+
+{
+"summary": "Customer was charged but order was not created.",
+"category": "Payment Issue",
+"priority": "HIGH",
+"impact": "MEDIUM",
+"departments": ["Finance", "Support"],
+"recommendedActions": [
+"Verify payment",
+"Check order creation",
+"Prepare resolution"
+]
+}
+
+---
+
+## TASK PLANNING AGENT
+
+Convert the analysis into actionable tasks.
+
+Each task must contain:
+
+* Title
+* Description
+* Priority
+* Assigned Agent
+* Dependencies
+* Estimated duration
+* Requires approval
+* Status
+
+Example:
+
+{
+"title": "Verify payment transaction",
+"description": "Check whether the customer's payment was successfully processed.",
+"priority": "HIGH",
+"assignedAgent": "Finance Agent",
+"dependencies": [],
+"requiresApproval": false
+}
+
+---
+
+## COORDINATION AGENT
+
+Determine which agent or department should handle each task.
+
+Possible agents:
+
+* Finance Agent
+* Technical Agent
+* Support Agent
+* Operations Agent
+* Manager Agent
+
+---
+
+## EXECUTION AGENT
+
+Execute permitted application-level actions.
+
+Examples:
+
+* Create task
+* Update task
+* Update workflow
+* Generate report
+* Generate response
+* Create notification
+* Prepare recommendation
+
+For the hackathon, external real-world actions may be simulated.
+
+---
+
+## MONITORING AGENT
+
+Monitor workflow progress.
+
+Detect:
+
+* Delayed tasks
+* Failed tasks
+* Blocked tasks
+* Missing information
+* Incomplete workflows
+
+---
+
+## REPLANNING AGENT
+
+This is a critical feature.
+
+When a task fails or becomes delayed:
+
+1. Detect failure
+2. Analyze reason
+3. Determine alternative
+4. Generate new plan
+5. Reassign task
+6. Escalate if necessary
+7. Continue workflow
+
+Example:
+
+Finance Agent fails.
+
+The system should produce:
+
+"Finance Agent unavailable. Reassigning verification task to Backup Finance Agent and notifying Manager."
+
+==================================================
+
+# 6. HUMAN-IN-THE-LOOP
+
+==================================================
+
+Not every action should be autonomous.
+
+Low-risk actions may execute automatically.
+
+High-impact actions require human approval.
+
+Example:
+
+AI recommendation:
+
+"Approve customer refund of ₹4,500."
+
+Display:
+
+[ APPROVE ]
+
+[ REJECT ]
+
+When approved:
+
+* Save approval
+* Update database
+* Continue workflow
+* Add activity log
+
+When rejected:
+
+* Save rejection
+* Ask AI for an alternative
+* Update workflow
+
+==================================================
+
+# 7. MAIN DEMO SCENARIO
+
+==================================================
+
+The main hackathon demonstration must use this scenario:
+
+"A customer was charged for an order, but the order was not created."
+
+The application should automatically:
+
+1. Analyze the problem.
+2. Classify it as a payment/order issue.
+3. Determine priority.
+4. Determine impact.
+5. Create a workflow.
+6. Generate multiple tasks.
+7. Assign tasks to agents.
+8. Start execution.
+9. Display agent activities.
+10. Monitor tasks.
+11. Allow failure simulation.
+12. Detect failure.
+13. Replan automatically.
+14. Request approval if required.
+15. Complete the workflow.
+
+==================================================
+
+# 8. SIMULATE FAILURE FEATURE
+
+==================================================
+
+Create a highly visible button:
+
+# Simulate Task Failure
+
+When clicked:
+
+1. Select an active task.
+2. Set status to "failed".
+3. Create AgentLog.
+4. Monitoring Agent detects failure.
+5. Orchestrator receives failure.
+6. Replanning Agent generates a new plan.
+7. Task is reassigned.
+8. Workflow continues.
+
+The UI must show:
+
+⚠ TASK FAILURE DETECTED
+
+↓
+
+MONITORING AGENT
+
+↓
+
+ORCHESTRATOR
+
+↓
+
+ANALYZING FAILURE
+
+↓
+
+REPLANNING
+
+↓
+
+TASK REASSIGNED
+
+↓
+
+WORKFLOW CONTINUING
+
+This is one of the main features judges should see.
+
+==================================================
+
+# 9. FRONTEND PAGES
+
+==================================================
+
+Create the following pages.
+
+1. Landing Page
+2. Login
+3. Register
+4. Dashboard
+5. Create Workflow
+6. Workflow Details
+7. Agent Activity
+8. Tasks
+9. Approvals
+10. Analytics
+11. Profile / Settings
+
+Use React Router.
+
+==================================================
+
+# 10. LANDING PAGE
+
+==================================================
+
+Create a professional enterprise AI landing page.
+
+Hero title:
+
+"Turn Business Problems Into Autonomous Workflows"
+
+Subtitle:
+
+"WorkFlowX AI uses intelligent multi-agent systems to analyze problems, plan workflows, coordinate tasks, monitor execution, and dynamically adapt when things change."
+
+Buttons:
+
+"Launch Dashboard"
+
+"See How It Works"
+
+Include sections:
+
+* Problem
+* Solution
+* How It Works
+* Multi-Agent Architecture
+* Features
+* Benefits
+* Technology Stack
+
+==================================================
+
+# 11. AUTHENTICATION
+
+==================================================
+
+Implement:
+
+Register
+Login
+Logout
+Get Current User
+
+Use:
+
+JWT
+bcrypt
+
+Registration:
+
+Name
+Email
+Password
+
+Passwords MUST be hashed.
+
+Never store plain-text passwords.
+
+Backend authentication middleware must protect private routes.
+
+==================================================
+
+# 12. DASHBOARD
+
+==================================================
+
+Create an enterprise dashboard.
+
+Display:
+
+Total Workflows
+Active Workflows
+Completed Workflows
+Pending Tasks
+High Priority Workflows
+Failed Tasks
+Replanned Workflows
+
+Create:
+
+Recent Workflows
+
+Agent Activity Feed
+
+Example:
+
+10:32:01
+Orchestrator
+New workflow received
+
+10:32:03
+Analysis Agent
+Priority classified as HIGH
+
+10:32:05
+Planning Agent
+5 tasks generated
+
+10:32:07
+Coordination Agent
+Tasks assigned
+
+10:32:12
+Monitoring Agent
+Task delay detected
+
+10:32:13
+Orchestrator
+Workflow replanning
+
+==================================================
+
+# 13. CREATE WORKFLOW
+
+==================================================
+
+Fields:
+
+Problem Title
+Problem Description
+Department
+Deadline
+
+Priority:
+
+Automatic
+
+Button:
+
+# Analyze With AI
+
+Show loading state:
+
+"AI is analyzing your problem..."
+
+Then display AI analysis.
+
+==================================================
+
+# 14. WORKFLOW DETAILS
+
+==================================================
+
+Display:
+
+Problem
+AI Analysis
+Category
+Priority
+Business Impact
+Workflow Status
+Progress
+Tasks
+Assigned Agents
+Agent Activity
+AI Recommendations
+Approval Requests
+Timeline
+
+Actions:
+
+Start Workflow
+Pause Workflow
+Replan Workflow
+Simulate Failure
+Complete Workflow
+
+==================================================
+
+# 15. AGENT ACTIVITY
+
+==================================================
+
+Create a visually impressive agent activity page.
+
+Agents:
+
+ORCHESTRATOR
+ANALYSIS AGENT
+TASK PLANNING AGENT
+COORDINATION AGENT
+EXECUTION AGENT
+MONITORING AGENT
+REPLANNING AGENT
+
+Each card displays:
+
+* Agent name
+* Status
+* Current action
+* Last activity
+* Timestamp
+
+Use visual status indicators.
+
+==================================================
+
+# 16. TASK MANAGEMENT
+
+==================================================
+
+Task statuses:
+
+Pending
+In Progress
+Blocked
+Completed
+Failed
+
+Priority:
+
+Low
+Medium
+High
+Critical
+
+Each task:
+
+* Title
+* Description
+* Assigned Agent
+* Priority
+* Status
+* Deadline
+* Created At
+* Updated At
+
+Users can update task status where authorized.
+
+==================================================
+
+# 17. APPROVAL CENTER
+
+==================================================
+
+Create a dedicated approval page.
+
+Example:
+
+PENDING APPROVAL
+
+Action:
+
+"Approve customer refund"
+
+Reason:
+
+"Payment was successful but order was not created."
+
+AI Recommendation:
+
+"Approve refund."
+
+Buttons:
+
+Approve
+Reject
+
+Save the decision in MongoDB.
+
+==================================================
+
+# 18. ANALYTICS
+
+==================================================
+
+Create analytics dashboard.
+
+Metrics:
+
+* Total workflows
+* Completed workflows
+* Active workflows
+* Average resolution time
+* Failed tasks
+* Replanned workflows
+* Agent activity
+* High priority issues
+
+Use charts or visual statistics.
+
+==================================================
+
+# 19. UI/UX
+
+==================================================
+
+The application must look like a modern enterprise SaaS product.
+
+Use:
+
+* Tailwind CSS
+* Responsive layouts
+* Sidebar
+* Top navigation
+* Cards
+* Status badges
+* Progress bars
+* Agent cards
+* Timeline
+* Modal dialogs
+* Toast notifications
+* Loading skeletons
+* Empty states
+* Error states
+
+Use a professional AI/enterprise visual style.
+
+Do NOT make it look like a basic student CRUD project.
+
+Avoid excessive animations.
+
+Use subtle animations for:
+
+* Agent activity
+* Workflow progress
+* Status changes
+* Loading states
+
+==================================================
+
+# 20. BACKEND STRUCTURE
+
+==================================================
+
+Use this structure:
+
+backend/
+
+├── config/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── agents/
+├── utils/
+├── validators/
+├── server.js
+└── package.json
+
+Agents:
+
+agents/
+
+analysisAgent.js
+planningAgent.js
+coordinationAgent.js
+executionAgent.js
+monitoringAgent.js
+replanningAgent.js
+
+Services:
+
+services/
+
+aiService.js
+orchestratorService.js
+workflowService.js
+
+==================================================
+
+# 21. DATABASE
+
+==================================================
+
+Use MongoDB with Mongoose.
+
+Create models:
+
+User
+Workflow
+Task
+AgentLog
+Approval
+Notification
+
+USER:
+
+name
+email
+passwordHash
+role
+createdAt
+
+WORKFLOW:
+
+title
+description
+category
+priority
+impact
+status
+createdBy
+aiAnalysis
+currentStep
+requiresApproval
+createdAt
+updatedAt
+
+TASK:
+
+workflowId
+title
+description
+assignedAgent
+priority
+status
+dependencies
+requiresApproval
+deadline
+createdAt
+updatedAt
+
+AGENT LOG:
+
+workflowId
+agentName
+action
+status
+summary
+timestamp
+
+APPROVAL:
+
+workflowId
+taskId
+action
+reason
+status
+approvedBy
+createdAt
+updatedAt
+
+NOTIFICATION:
+
+userId
+message
+type
+read
+createdAt
+
+==================================================
+
+# 22. API ROUTES
+
+==================================================
+
+Authentication:
+
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+
+Workflows:
+
+GET /api/workflows
+POST /api/workflows
+GET /api/workflows/:id
+PUT /api/workflows/:id
+DELETE /api/workflows/:id
+
+AI:
+
+POST /api/workflows/:id/analyze
+POST /api/workflows/:id/plan
+POST /api/workflows/:id/replan
+
+Execution:
+
+POST /api/workflows/:id/start
+POST /api/workflows/:id/execute
+POST /api/workflows/:id/simulate-failure
+
+Tasks:
+
+GET /api/tasks
+GET /api/tasks/:id
+PUT /api/tasks/:id
+
+Agents:
+
+GET /api/workflows/:id/agents
+
+Approvals:
+
+GET /api/approvals
+POST /api/approvals/:id/approve
+POST /api/approvals/:id/reject
+
+Analytics:
+
+GET /api/analytics/dashboard
+
+Protect private routes with JWT.
+
+==================================================
+
+# 23. ZOD VALIDATION
+
+==================================================
+
+Use Zod for:
+
+* Registration
+* Login
+* Workflow creation
+* Workflow update
+* Task update
+* Approval requests
+* IDs
+* AI response validation
+
+Return meaningful errors.
+
+==================================================
+
+# 24. AI INTEGRATION
+
+==================================================
+
+Use Google Gemini API.
+
+Create:
+
+services/aiService.js
+
+The backend should communicate with Gemini.
+
+Example environment variables:
+
+GEMINI_API_KEY=
+MONGODB_URI=
+JWT_SECRET=
+PORT=5000
+
+NEVER expose:
+
+GEMINI_API_KEY
+
+to React.
+
+The frontend communicates only with the Express backend.
+
+Architecture:
+
+React
+↓
+Axios
+↓
+Express
+↓
+AI Service
+↓
+Gemini API
+
+==================================================
+
+# 25. AI STRUCTURED OUTPUT
+
+==================================================
+
+AI responses should be structured JSON.
+
+Analysis response:
+
+{
+"summary": "",
+"category": "",
+"priority": "",
+"impact": "",
+"departments": [],
+"recommendedActions": []
+}
+
+Planning response:
+
+{
+"tasks": [
+{
+"title": "",
+"description": "",
+"priority": "",
+"assignedAgent": "",
+"dependencies": [],
+"requiresApproval": false
+}
+]
+}
+
+Replanning response:
+
+{
+"reason": "",
+"failedTask": "",
+"newPlan": [],
+"escalationRequired": false,
+"requiresHumanApproval": false
+}
+
+Validate AI responses before storing them.
+
+If AI returns invalid data:
+
+* Handle gracefully
+* Do not crash server
+* Show user-friendly error
+
+Do not expose internal chain-of-thought.
+
+Only store concise decision summaries.
+
+==================================================
+
+# 26. API SECURITY
+
+==================================================
+
+Implement:
+
+JWT authentication
+bcrypt password hashing
+Zod validation
+CORS
+Environment variables
+Protected routes
+Centralized error handling
+
+Never return:
+
+* Password hashes
+* API keys
+* JWT secrets
+* Database credentials
+
+==================================================
+
+# 27. ENVIRONMENT VARIABLES
+
+==================================================
+
+Backend .env:
+
+GEMINI_API_KEY=
+MONGODB_URI=
+JWT_SECRET=
+PORT=5000
+
+Frontend .env:
+
+VITE_API_URL=
+
+Create:
+
+.env.example
+
+Do NOT commit .env.
+
+Add .env to .gitignore.
+
+==================================================
+
+# 28. ERROR HANDLING
+
+==================================================
+
+Handle:
+
+* Invalid login
+* Expired JWT
+* Unauthorized access
+* Invalid input
+* Missing workflow
+* Missing task
+* Database errors
+* Gemini API errors
+* Invalid AI output
+* Network failures
+
+Create centralized Express error middleware.
+
+Do not expose stack traces in production.
+
+==================================================
+
+# 29. AGENT LOGGING
+
+==================================================
+
+Every important agent action must be stored.
+
+Example:
+
+{
+"agentName": "Analysis Agent",
+"action": "Classified workflow priority",
+"status": "completed",
+"summary": "Classified as high priority due to significant business impact."
+}
+
+Display these logs on:
+
+* Dashboard
+* Workflow Details
+* Agent Activity
+
+==================================================
+
+# 30. DEMO MODE
+
+==================================================
+
+Create a button:
+
+# Try Demo Workflow
+
+This should create:
+
+"A customer was charged for an order, but the order was not created."
+
+Automatically demonstrate:
+
+Analysis
+Planning
+Task generation
+Agent assignment
+Execution
+Monitoring
+
+Then allow:
+
+# Simulate Failure
+
+to demonstrate autonomous replanning.
+
+This must work reliably for the hackathon demo.
+
+==================================================
+
+# 31. DEMO DATA
+
+==================================================
+
+Provide sample workflows:
+
+1. Customer Payment Issue
+2. Delayed Delivery
+3. Employee Access Request
+4. IT System Outage
+5. Supplier Delay
+
+Do not require real external company integrations.
+
+==================================================
+
+# 32. FRONTEND-BACKEND COMMUNICATION
+
+==================================================
+
+Use Axios.
+
+Create a centralized Axios client.
+
+Example architecture:
+
+frontend/src/services/api.js
+
+Configure:
+
+baseURL = VITE_API_URL
+
+Add JWT authorization where required.
+
+Handle:
+
+401
+403
+404
+500
+
+appropriately.
+
+==================================================
+
+# 33. PROJECT STRUCTURE
+
+==================================================
+
+Use:
+
+workflowx-ai/
+
+frontend/
+
+src/
+
+components/
+pages/
+layouts/
+services/
+hooks/
+context/
+utils/
+
+App.jsx
+main.jsx
+
+backend/
+
+config/
+controllers/
+middleware/
+models/
+routes/
+services/
+agents/
+validators/
+utils/
+
+server.js
+
+README.md
+.gitignore
+.env.example
+
+==================================================
+
+# 34. DEPLOYMENT
+
+==================================================
+
+Prepare frontend for Vercel.
+
+Prepare backend for Render.
+
+Prepare MongoDB Atlas.
+
+Deployment architecture:
+
+USER
+↓
+VERCEL
+React + Vite
+↓
+RENDER
+Node + Express
+↓
+MONGODB ATLAS
+
+and:
+
+RENDER
+↓
+GEMINI API
+
+The Gemini API key remains only on Render environment variables.
+
+Configure CORS correctly.
+
+Use production environment variables.
+
+==================================================
+
+# 35. GITHUB
+
+==================================================
+
+Create a professional README.md.
+
+README must include:
+
+Project Name
+Problem Statement
+Solution
+Features
+Agent Architecture
+System Architecture
+Technology Stack
+Database Structure
+API Documentation
+Environment Variables
+Local Setup
+Running Frontend
+Running Backend
+MongoDB Setup
+Gemini Setup
+Deployment
+Demo Instructions
+Future Improvements
+
+Do not include actual API keys.
+
+==================================================
+
+# 36. LOCAL SETUP
+
+==================================================
+
+README should explain:
+
+Step 1:
+
+Clone repository.
+
+Step 2:
+
+Install frontend dependencies.
+
+npm install
+
+Step 3:
+
+Install backend dependencies.
+
+npm install
+
+Step 4:
+
+Create backend .env.
+
+Step 5:
+
+Add:
+
+GEMINI_API_KEY
+MONGODB_URI
+JWT_SECRET
+PORT
+
+Step 6:
+
+Create frontend .env.
+
+Add:
+
+VITE_API_URL
+
+Step 7:
+
+Start backend.
+
+npm run dev
+
+Step 8:
+
+Start frontend.
+
+npm run dev
+
+==================================================
+
+# 37. TESTING
+
+==================================================
+
+Test:
+
+* Registration
+* Login
+* Logout
+* JWT
+* Workflow creation
+* Workflow retrieval
+* AI analysis
+* Task generation
+* Task assignment
+* Workflow execution
+* Agent logging
+* Failure simulation
+* Autonomous replanning
+* Approval
+* Rejection
+* Workflow completion
+* Analytics
+* Invalid input
+* Unauthorized requests
+* AI failure
+* Database failure
+
+Fix all major errors before considering the project complete.
+
+==================================================
+
+# 38. RESPONSIVENESS
+
+==================================================
+
+The application must work on:
+
+* Desktop
+* Laptop
+* Tablet
+
+Prioritize desktop because the hackathon presentation will most likely use a laptop/projector.
+
+==================================================
+
+# 39. PERFORMANCE
+
+==================================================
+
+Avoid unnecessary Gemini API calls.
+
+Persist AI results.
+
+Do not repeatedly call Gemini for the same workflow state.
+
+Show loading indicators.
+
+Handle API timeout gracefully.
+
+Do not block the entire application while an AI request is processing.
+
+==================================================
+
+# 40. IMPORTANT AGENTIC REQUIREMENT
+
+==================================================
+
+The application MUST clearly demonstrate the difference between ordinary automation and agentic AI.
+
+Ordinary automation:
+
+IF X
+THEN Y
+
+Agentic workflow:
+
+Observe
+↓
+Reason
+↓
+Plan
+↓
+Choose action
+↓
+Execute
+↓
+Observe result
+↓
+Adapt
+
+The system must dynamically react when a task fails.
+
+==================================================
+
+# 41. NO FAKE AGENTIC AI
+
+==================================================
+
+Do NOT simply create UI cards named:
+
+"AI Agent"
+
+while everything underneath is hard-coded.
+
+The agents must actually participate in the workflow.
+
+Gemini should be used for:
+
+* Problem analysis
+* Priority reasoning
+* Task planning
+* Workflow planning
+* Replanning
+* Recommendations
+
+Application logic may handle:
+
+* Authentication
+* Database operations
+* Permissions
+* State transitions
+* Failure simulation
+* Validation
+
+==================================================
+
+# 42. HACKATHON SUBMISSION REQUIREMENTS
+
+==================================================
+
+The final project must satisfy:
+
+## Problem Statement
+
+Provide a brief description of the business workflow problem.
+
+## Solution Description
+
+Explain:
+
+* WorkFlowX AI
+* Multi-agent architecture
+* AI integration
+* Autonomous planning
+* Task delegation
+* Monitoring
+* Replanning
+* Human approval
+
+## GitHub Repository
+
+Public GitHub repository containing:
+
+* Complete frontend
+* Complete backend
+* README
+* Setup instructions
+* Environment variable documentation
+* API documentation
+
+## Deployed Application
+
+Frontend:
+
+Vercel
+
+Backend:
+
+Render
+
+Database:
+
+MongoDB Atlas
+
+## Demo Video
+
+Prepare the application for a 3–5 minute demo.
+
+==================================================
+
+# 43. DEMO VIDEO FLOW
+
+==================================================
+
+The ideal demo should follow:
+
+0:00–0:30
+
+Explain the problem.
+
+0:30–1:00
+
+Introduce WorkFlowX AI.
+
+1:00–2:00
+
+Create a workflow.
+
+Show:
+
+AI analysis
+Priority
+Tasks
+Agent assignments
+
+2:00–3:00
+
+Start workflow.
+
+Show:
+
+Agent Activity
+
+Then click:
+
+Simulate Failure
+
+Show:
+
+Failure Detection
+↓
+Orchestrator
+↓
+Replanning
+↓
+Task Reassignment
+
+3:00–3:30
+
+Show Human Approval.
+
+Approve the action.
+
+3:30–4:00
+
+Show completed workflow and analytics.
+
+End with:
+
+"WorkFlowX AI doesn't just answer business problems. It understands them, plans the work, coordinates agents, adapts to failures, and drives the workflow toward resolution."
+
+==================================================
+
+# 44. FINAL UI REQUIREMENT
+
+==================================================
+
+Make the UI impressive enough for a hackathon presentation.
+
+Prioritize:
+
+1. Dashboard
+2. Agent Activity
+3. Workflow Details
+4. Failure Simulation
+5. Replanning visualization
+6. Approval Center
+
+The Agent Activity and Replanning screens should be visually impressive.
+
+==================================================
+
+# 45. FINAL ACCEPTANCE CRITERIA
+
+==================================================
+
+The project is complete only when:
+
+[ ] React.js implemented
+[ ] Vite implemented
+[ ] React Router implemented
+[ ] Tailwind CSS implemented
+[ ] Axios implemented
+[ ] Node.js implemented
+[ ] Express.js implemented
+[ ] JWT authentication implemented
+[ ] bcrypt implemented
+[ ] Zod implemented
+[ ] MongoDB implemented
+[ ] MongoDB Atlas deployment ready
+[ ] Gemini API implemented
+[ ] Gemini API key backend-only
+[ ] User registration works
+[ ] User login works
+[ ] JWT protection works
+[ ] Workflow creation works
+[ ] AI analysis works
+[ ] AI task planning works
+[ ] Agent assignment works
+[ ] Agent logging works
+[ ] Workflow execution works
+[ ] Monitoring works
+[ ] Failure simulation works
+[ ] Autonomous replanning works
+[ ] Human approval works
+[ ] Analytics works
+[ ] Demo mode works
+[ ] README complete
+[ ] GitHub ready
+[ ] Vercel deployment ready
+[ ] Render deployment ready
+[ ] MongoDB Atlas ready
+[ ] No secrets committed
+[ ] No critical frontend errors
+[ ] No critical backend errors
+[ ] Responsive UI
+[ ] Complete 3–5 minute demo flow
+
+==================================================
+
+# 46. DEVELOPMENT INSTRUCTION
+
+==================================================
+
+DO NOT stop after creating a design or architecture.
+
+Actually implement the complete application.
+
+Do not leave major features as:
+
+TODO
+Coming Soon
+Placeholder
+Dummy Button
+Not Implemented
+
+Every major button must perform a meaningful action.
+
+If a real external integration is unnecessary for the hackathon, create a realistic internal simulation.
+
+Prioritize:
+
+FUNCTIONALITY
+RELIABILITY
+AI AGENTIC BEHAVIOR
+GOOD UI
+DEMO QUALITY
+DEPLOYABILITY
+
+over unnecessary complexity.
+
+Do not introduce technologies outside the mandatory stack.
+
+Before finishing, test the complete flow:
+
+REGISTER
+↓
+LOGIN
+↓
+DASHBOARD
+↓
+CREATE WORKFLOW
+↓
+AI ANALYSIS
+↓
+TASK PLANNING
+↓
+AGENT ASSIGNMENT
+↓
+EXECUTION
+↓
+MONITORING
+↓
+SIMULATE FAILURE
+↓
+FAILURE DETECTION
+↓
+AUTONOMOUS REPLANNING
+↓
+HUMAN APPROVAL
+↓
+COMPLETION
+↓
+ANALYTICS
+
+Finally, provide a concise implementation summary containing:
+
+1. Files created
+2. Features implemented
+3. Agent architecture
+4. API routes
+5. Database models
+6. Environment variables
+7. Local setup
+8. Testing performed
+9. Deployment instructions
+10. Demo instructions
+11. Known limitations
+12. Future improvements
+
+IMPORTANT:
+
+Do not change the technology stack.
+
+Use React.js + Vite + React Router + Tailwind CSS + Axios for frontend.
+
+Use Node.js + Express.js + JWT + bcrypt + Zod for backend.
+
+Use MongoDB + Mongoose + MongoDB Atlas for database.
+
+Use Google Gemini API for AI.
+
+Use Vercel for frontend deployment.
+
+Use Render for backend deployment.
+
+Keep the Gemini API key exclusively in backend environment variables.
+
+Build the complete WorkFlowX AI application now.
