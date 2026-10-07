@@ -1,0 +1,259 @@
+The application UI is working, but registration currently fails with:
+
+"HTTP 503 Service Unavailable: MongoDB Atlas is unavailable. Check the connection string and Atlas network access."
+
+IMPORTANT: I am using SUPABASE PostgreSQL as the database, NOT MongoDB.
+
+Do NOT ask me to configure MongoDB Atlas.
+
+Fix the existing application without rebuilding or removing the current frontend.
+
+TASK:
+
+1. Inspect the entire existing project.
+2. Find every MongoDB/Mongoose dependency, connection, model, environment variable, and API implementation.
+3. Remove the MongoDB/Mongoose database dependency from the application.
+4. Migrate the backend database layer to Supabase PostgreSQL.
+
+TECH STACK MUST BE:
+
+Frontend:
+
+* React.js
+* Vite
+* React Router
+* Tailwind CSS
+* Axios
+
+Backend:
+
+* Node.js
+* Express.js
+* JWT
+* bcrypt
+* Zod
+
+Database:
+
+* Supabase PostgreSQL
+
+AI:
+
+* Google Gemini API
+
+Keep the existing UI and functionality.
+
+SUPABASE:
+
+Use the Supabase backend/database connection through environment variables.
+
+Use:
+
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+
+The service role key must ONLY be used on the backend.
+
+Never expose SUPABASE_SERVICE_ROLE_KEY in React/Vite frontend code.
+
+Do not put it in VITE_ environment variables.
+
+AUTHENTICATION:
+
+Keep the application's existing custom JWT authentication.
+
+Registration must:
+
+1. Receive name, email, and password.
+2. Validate input using Zod.
+3. Hash password using bcrypt.
+4. Insert the user into the Supabase PostgreSQL users table.
+5. Never store plain-text passwords.
+6. Return a JWT after successful registration.
+7. Log the user in automatically if that is how the existing application works.
+
+LOGIN must:
+
+1. Find the user in Supabase.
+2. Compare password using bcrypt.
+3. Generate JWT.
+4. Return authenticated user information.
+
+DATABASE TABLES:
+
+Create/use these Supabase PostgreSQL tables:
+
+users:
+
+* id
+* name
+* email
+* password_hash
+* role
+* created_at
+
+workflows:
+
+* id
+* title
+* description
+* category
+* priority
+* impact
+* status
+* created_by
+* ai_analysis
+* current_step
+* requires_approval
+* created_at
+* updated_at
+
+tasks:
+
+* id
+* workflow_id
+* title
+* description
+* assigned_agent
+* priority
+* status
+* dependencies
+* requires_approval
+* deadline
+* created_at
+* updated_at
+
+agent_logs:
+
+* id
+* workflow_id
+* agent_name
+* action
+* status
+* summary
+* timestamp
+
+approvals:
+
+* id
+* workflow_id
+* task_id
+* action
+* reason
+* status
+* approved_by
+* created_at
+* updated_at
+
+notifications:
+
+* id
+* user_id
+* message
+* type
+* read
+* created_at
+
+Use appropriate PostgreSQL data types, primary keys, foreign keys, timestamps, and constraints.
+
+IMPORTANT:
+
+Do not create a second authentication system.
+
+Do not use Supabase Auth unless it is absolutely necessary.
+
+Keep the existing JWT + bcrypt authentication required by the project.
+
+BACKEND:
+
+Create/configure a Supabase database service such as:
+
+supabaseClient.js
+
+Use the official Supabase JavaScript client on the backend.
+
+Move all database operations from MongoDB/Mongoose to Supabase queries.
+
+Replace:
+
+mongoose.connect()
+MongoClient
+Schema
+Model.find()
+Model.create()
+Model.findById()
+Model.findOne()
+Model.updateOne()
+etc.
+
+with Supabase PostgreSQL operations.
+
+ENVIRONMENT VARIABLES:
+
+Backend should use:
+
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+JWT_SECRET=
+GEMINI_API_KEY=
+PORT=5000
+
+Frontend should only use:
+
+VITE_API_URL=
+
+Do NOT expose:
+
+SUPABASE_SERVICE_ROLE_KEY
+JWT_SECRET
+GEMINI_API_KEY
+
+to the frontend.
+
+ERROR HANDLING:
+
+Fix the current HTTP 503 error.
+
+If Supabase is unavailable, return a clear database error.
+
+Do not show MongoDB Atlas errors anywhere in the application.
+
+The application should never display:
+
+"MongoDB Atlas is unavailable"
+
+because MongoDB is no longer being used.
+
+TEST:
+
+After making the changes:
+
+1. Start backend.
+2. Start frontend.
+3. Open registration page.
+4. Create a test account.
+5. Verify the user is inserted into Supabase.
+6. Verify password is hashed.
+7. Verify JWT is generated.
+8. Log out.
+9. Log in again.
+10. Verify protected dashboard works.
+11. Create a workflow.
+12. Verify workflow is stored in Supabase.
+13. Verify tasks are stored in Supabase.
+14. Verify agent logs are stored in Supabase.
+15. Test approval functionality.
+16. Test failure simulation.
+17. Test replanning.
+
+IMPORTANT:
+
+Do not just tell me what is wrong.
+
+Actually modify the existing project files and fix the issue.
+
+Do not rebuild the project from scratch.
+
+Preserve the existing UI, pages, styling, agentic AI features, and functionality.
+
+After fixing everything, run the application and verify that registration and login work successfully.
